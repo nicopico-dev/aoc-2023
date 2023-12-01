@@ -9,13 +9,13 @@ class InputReaderTest {
 
     @Test
     fun testReadInputAsString() {
-        val testInputAsString = InputReader.getInputAsString(1)
+        val testInputAsString = InputReader.getInputAsString(0)
         testInputAsString shouldBe "this\nis\na\ntest input\nfile\n"
     }
 
     @Test
     fun testReadInputAsList() {
-        val testInputAsList = InputReader.getInputAsList(1)
+        val testInputAsList = InputReader.getInputAsList(0)
         testInputAsList shouldContainExactly listOf("this", "is", "a", "test input", "file")
     }
 }

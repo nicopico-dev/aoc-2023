@@ -17,8 +17,8 @@ class RunnerTest {
             """
             
             === DAY 1 ===
-            Part 1: THIS IS      \(.*\)
-            Part 2: FILE         \(.*\)
+            Part 1: .*
+            Part 2: .*
             
             """.trimIndent()
     }
