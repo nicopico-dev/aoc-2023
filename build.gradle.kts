@@ -20,7 +20,7 @@ dependencies {
 
     testImplementation("org.junit.jupiter", "junit-jupiter-api", "5.10.1")
     testImplementation("org.junit.jupiter", "junit-jupiter-engine", "5.10.1")
-    testImplementation("org.hamcrest", "hamcrest", "2.2")
+    testImplementation("io.kotest:kotest-assertions-core:5.8.0")
     testImplementation ("com.github.stefanbirkner:system-lambda:1.2.1")
 }
 
@@ -29,5 +29,5 @@ tasks.test {
 }
 
 kotlin {
-    jvmToolchain(20)
+    jvmToolchain(17)
 }

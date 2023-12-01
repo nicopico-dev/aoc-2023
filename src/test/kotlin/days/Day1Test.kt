@@ -1,9 +1,10 @@
 package days
 
-import org.hamcrest.MatcherAssert.assertThat
-import org.hamcrest.core.Is.`is`
-import org.hamcrest.core.IsInstanceOf.instanceOf
-import org.hamcrest.core.IsNull.notNullValue
+import io.kotest.matchers.nulls.beNull
+import io.kotest.matchers.should
+import io.kotest.matchers.shouldBe
+import io.kotest.matchers.shouldNot
+import io.kotest.matchers.types.instanceOf
 import org.junit.jupiter.api.Test
 
 class Day1Test {
@@ -12,14 +13,15 @@ class Day1Test {
 
     @Test
     fun testPartOne() {
-        assertThat(dayOne.partOne(), `is`("THIS IS"))
+        dayOne.partOne() shouldBe "THIS IS"
     }
 
     @Test
     fun testPartTwo() {
-        val partTwo = dayOne.partTwo()
-        assertThat(partTwo, notNullValue())
-        assertThat(partTwo, instanceOf(String::class.java))
-        assertThat(partTwo, `is`("FILE"))
+        dayOne.partTwo() should {
+            it shouldNot beNull()
+            it shouldBe instanceOf<String>()
+            it shouldBe "FILE"
+        }
     }
 }
