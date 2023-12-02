@@ -62,6 +62,7 @@ class Day2Test {
     }
     //endregion
 
+    //region Part 2
     @Test
     fun `getMinimumHypothesis compute the minimum hypothesis for a game`() {
         val game1 = Day2.parseInput("Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green")
@@ -80,4 +81,11 @@ class Day2Test {
             Hypothesis(red = 1, green = 3, blue = 4).power shouldBe 12
         }
     }
+
+    @Test
+    fun partTwo() {
+        val day = Day2()
+        day.partTwo() shouldBe 2286
+    }
+    //endregion
 }

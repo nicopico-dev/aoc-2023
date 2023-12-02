@@ -18,7 +18,12 @@ class Day2(
             .sumOf { it.id }
     }
 
-    override fun partTwo(): Any = "TODO"
+    override fun partTwo(): Any {
+        return inputList
+            .map { parseInput(it) }
+            .map { it.getMinimumHypothesis() }
+            .sumOf { it.power }
+    }
 
     companion object {
         private val gameRegex = Regex("Game (\\d+):")
