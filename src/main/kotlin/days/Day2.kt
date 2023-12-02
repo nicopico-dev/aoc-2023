@@ -65,6 +65,8 @@ class Day2(
         val green: Int = 0,
         val blue: Int = 0,
     ) {
+        val power = red * green * blue
+
         infix fun isPossibleWith(game: Game): Boolean {
             return game.takes.all { take ->
                 (take[Color.Red] ?: 0) <= red

@@ -67,7 +67,17 @@ class Day2Test {
         val game1 = Day2.parseInput("Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green")
         val game3 = Day2.parseInput("Game 3: 8 green, 6 blue, 20 red; 5 blue, 4 red, 13 green; 5 green, 1 red")
 
-        game1.getMinimumHypothesis() shouldBe Hypothesis(red = 4, green = 2, blue = 6)
-        game3.getMinimumHypothesis() shouldBe Hypothesis(red = 20, green = 13, blue = 6)
+        assertSoftly {
+            game1.getMinimumHypothesis() shouldBe Hypothesis(red = 4, green = 2, blue = 6)
+            game3.getMinimumHypothesis() shouldBe Hypothesis(red = 20, green = 13, blue = 6)
+        }
+    }
+
+    @Test
+    fun `the power of an hypothesis is all colors multiplied together`() {
+        assertSoftly {
+            Hypothesis(red = 4, green = 2, blue = 6).power shouldBe 48
+            Hypothesis(red = 1, green = 3, blue = 4).power shouldBe 12
+        }
     }
 }
