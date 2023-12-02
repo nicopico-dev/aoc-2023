@@ -1,5 +1,7 @@
 package days
 
+import util.replaceLast
+
 class Day1(
     inputFileNameOverride: String? = null,
 ) : Day(1, inputFileNameOverride) {
@@ -24,24 +26,53 @@ class Day1(
     }
 
     companion object {
-        val spelledDigits = mapOf(
-            "one" to 1,
-            "two" to 2,
-            "three" to 3,
-            "four" to 4,
-            "five" to 5,
-            "six" to 6,
-            "seven" to 7,
-            "eight" to 8,
-            "nine" to 9,
+        private val spelledDigits = mapOf(
+            "one" to "1",
+            "two" to "2",
+            "three" to "3",
+            "four" to "4",
+            "five" to "5",
+            "six" to "6",
+            "seven" to "7",
+            "eight" to "8",
+            "nine" to "9",
         )
 
         fun replaceSpelledDigits(line: String): String {
-            var tmp = line
-            spelledDigits.forEach { (spelled, value) ->
-                tmp = tmp.replace(Regex(spelled), value.toString())
+            var firstSpelled: Spelled? = null
+            var lastSpelled: Spelled? = null
+            spelledDigits.keys.forEach { word ->
+                line.indexOf(word).let { index ->
+                    if (index >= 0 && index < (firstSpelled?.startIndex ?: Int.MAX_VALUE)) {
+                        firstSpelled = Spelled(word, index)
+                    }
+                }
+                line.lastIndexOf(word).let { index ->
+                    if (index >= 0 && (index + word.length) > (lastSpelled?.endIndex ?: Int.MIN_VALUE)) {
+                        lastSpelled = Spelled(word, index)
+                    }
+                }
             }
-            return tmp
+
+            return line
+                .let {
+                    firstSpelled?.let { spelled ->
+                        // Only replace the first occurrence
+                        it.replaceFirst(spelled.word, spelledDigits[spelled.word]!!)
+                    } ?: it
+                }
+                .let {
+                    lastSpelled?.let { spelled ->
+                        it.replaceLast(spelled.word, spelledDigits[spelled.word]!!)
+                    } ?: it
+                }
         }
+    }
+
+    private data class Spelled(
+        val word: String,
+        val startIndex: Int,
+    ) {
+        val endIndex = startIndex + word.length
     }
 }
