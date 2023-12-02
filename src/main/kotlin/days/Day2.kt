@@ -5,7 +5,15 @@ class Day2(
 ) : Day(2, inputFileNameOverride) {
 
     override fun partOne(): Any {
-        TODO("Not yet implemented")
+        val hypothesis = Hypothesis(
+            red = 12,
+            green = 13,
+            blue = 14,
+        )
+        return inputList
+            .map { parseInput(it) }
+            .filter { hypothesis isPossibleWith it }
+            .sumOf { it.id }
     }
 
     override fun partTwo(): Any {

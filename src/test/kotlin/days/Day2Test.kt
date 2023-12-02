@@ -53,4 +53,11 @@ class Day2Test {
             (hypothesis isPossibleWith game3) shouldBe false
         }
     }
+
+    @Test
+    fun partOne() {
+        val day = Day2()
+
+        day.partOne() shouldBe 8
+    }
 }
