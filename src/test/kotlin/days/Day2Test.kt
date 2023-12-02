@@ -15,6 +15,7 @@ class Day2Test {
     private val Int.green get() = Green to this
     private val Int.blue get() = Blue to this
 
+    //region Part 1
     @Test
     fun `parse input to extract a game`() {
         val actual = Day2.parseInput("Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green")
@@ -57,7 +58,16 @@ class Day2Test {
     @Test
     fun partOne() {
         val day = Day2()
-
         day.partOne() shouldBe 8
+    }
+    //endregion
+
+    @Test
+    fun `getMinimumHypothesis compute the minimum hypothesis for a game`() {
+        val game1 = Day2.parseInput("Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green")
+        val game3 = Day2.parseInput("Game 3: 8 green, 6 blue, 20 red; 5 blue, 4 red, 13 green; 5 green, 1 red")
+
+        game1.getMinimumHypothesis() shouldBe Hypothesis(red = 4, green = 2, blue = 6)
+        game3.getMinimumHypothesis() shouldBe Hypothesis(red = 20, green = 13, blue = 6)
     }
 }

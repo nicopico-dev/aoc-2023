@@ -1,5 +1,7 @@
 package days
 
+import kotlin.math.max
+
 class Day2(
     inputFileNameOverride: String? = null,
 ) : Day(2, inputFileNameOverride) {
@@ -46,7 +48,17 @@ class Day2(
     data class Game(
         val id: Int,
         val takes: List<Map<Color, Int>>
-    )
+    ) {
+        fun getMinimumHypothesis(): Hypothesis {
+            return takes.fold(Hypothesis()) { acc, take ->
+                Hypothesis(
+                    red = max(acc.red, take.getOrDefault(Color.Red, 0)),
+                    green = max(acc.green, take.getOrDefault(Color.Green, 0)),
+                    blue = max(acc.blue, take.getOrDefault(Color.Blue, 0)),
+                )
+            }
+        }
+    }
 
     data class Hypothesis(
         val red: Int = 0,
