@@ -42,6 +42,20 @@ class Day2(
         val takes: List<Map<Color, Int>>
     )
 
+    data class Hypothesis(
+        val red: Int = 0,
+        val green: Int = 0,
+        val blue: Int = 0,
+    ) {
+        infix fun isPossibleWith(game: Game): Boolean {
+            return game.takes.all { take ->
+                (take[Color.Red] ?: 0) <= red
+                        && (take[Color.Green] ?: 0) <= green
+                        && (take[Color.Blue] ?: 0) <= blue
+            }
+        }
+    }
+
     enum class Color {
         Red,
         Green,
