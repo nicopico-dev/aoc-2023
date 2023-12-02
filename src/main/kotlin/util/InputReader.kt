@@ -2,17 +2,19 @@ package util
 
 import java.io.File
 
-object InputReader {
+class InputReader(
+    private val inputFilename: String,
+) {
 
-    fun getInputAsString(day: Int): String {
-        return fromResources(day).readText()
+    fun getInputAsString(): String {
+        return fromResources().readText()
     }
 
-    fun getInputAsList(day: Int): List<String> {
-        return fromResources(day).readLines()
+    fun getInputAsList(): List<String> {
+        return fromResources().readLines()
     }
 
-    private fun fromResources(day: Int): File {
-        return File(javaClass.classLoader.getResource("input_day_$day.txt").toURI())
+    private fun fromResources(): File {
+        return File(javaClass.classLoader.getResource(inputFilename).toURI())
     }
 }
