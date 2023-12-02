@@ -16,9 +16,7 @@ class Day2(
             .sumOf { it.id }
     }
 
-    override fun partTwo(): Any {
-        TODO("Not yet implemented")
-    }
+    override fun partTwo(): Any = "TODO"
 
     companion object {
         private val gameRegex = Regex("Game (\\d+):")

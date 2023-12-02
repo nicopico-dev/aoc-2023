@@ -17,5 +17,5 @@ abstract class Day(inputFileName: String) {
 
     abstract fun partOne(): Any
 
-    abstract fun partTwo(): Any
+    open fun partTwo(): Any = "TODO"
 }
