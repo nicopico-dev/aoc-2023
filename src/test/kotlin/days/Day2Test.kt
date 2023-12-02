@@ -9,6 +9,10 @@ import org.junit.jupiter.api.Test
 
 class Day2Test {
 
+    private val Int.red get() = Red to this
+    private val Int.green get() = Green to this
+    private val Int.blue get() = Blue to this
+
     @Test
     fun `parseInput should extract the correct information from input`() {
         val actual = Day2.parseInput("Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green")
@@ -16,16 +20,16 @@ class Day2Test {
             id = 1,
             takes = listOf(
                 mapOf(
-                    Blue to 3,
-                    Red to 4,
+                    3.blue,
+                    4.red,
                 ),
                 mapOf(
-                    Red to 1,
-                    Green to 2,
-                    Blue to 6,
+                    1.red,
+                    2.green,
+                    6.blue,
                 ),
                 mapOf(
-                    Green to 2,
+                    2.green,
                 )
             )
         )
