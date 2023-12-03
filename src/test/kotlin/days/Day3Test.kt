@@ -1,5 +1,6 @@
 package days
 
+import days.Day3.GearRatio
 import days.Day3.Point
 import days.Day3.Schematic
 import io.kotest.assertions.assertSoftly
@@ -165,4 +166,26 @@ class Day3Test {
         day.partOne() shouldBe 4361
     }
     //endregion
+
+    @Test
+    fun getGearRatios() {
+        val day = Day3()
+
+        day.getGearRatios() shouldContainExactlyInAnyOrder
+                listOf(GearRatio(467, 35), GearRatio(755, 598))
+    }
+
+    @Test
+    fun `Gear ratio should have the right value`() {
+        assertSoftly {
+            GearRatio(467, 35).value shouldBe 16345
+            GearRatio(755, 598).value shouldBe 451490
+        }
+    }
+
+    @Test
+    fun partTwo() {
+        val day = Day3()
+        day.partTwo() shouldBe 467835
+    }
 }

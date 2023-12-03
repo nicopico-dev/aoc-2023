@@ -1,5 +1,8 @@
 package days
 
+import kotlin.math.max
+import kotlin.math.min
+
 class Day3(
     inputFileNameOverride: String? = null,
 ) : Day(3, inputFileNameOverride) {
@@ -27,6 +30,44 @@ class Day3(
             .distinct()
             .map { point ->
                 schematic.getWholeNumberStartingAt(point)
+            }
+    }
+
+    override fun partTwo(): Any {
+        return getGearRatios()
+            .sumOf { it.value }
+    }
+
+    fun getGearRatios(): List<GearRatio> {
+        val schematic = Schematic(inputString)
+        return schematic
+            .getSymbolPoints()
+            .filter { point ->
+                schematic.getCharacterAt(point) == '*'
+            }
+            .map { gearPoint ->
+                gearPoint
+                    .computeAdjacentPoints(schematic.width, schematic.height)
+                    .filter { point ->
+                        schematic.getCharacterAt(point).isDigit()
+                    }
+                    .map { point ->
+                        schematic.getNumberStartingPoint(point)
+                    }
+                    .distinct()
+                    .map { point ->
+                        schematic.getWholeNumberStartingAt(point)
+                    }
+            }
+            .mapNotNull { list ->
+                if (list.size == 2) {
+                    val first = list[0]
+                    val second = list[1]
+                    GearRatio(
+                        high = max(first, second),
+                        low = min(first, second),
+                    )
+                } else null
             }
     }
 
@@ -117,5 +158,14 @@ class Day3(
                 it.x in 0..<width && it.y in 0..<height
             }
         }
+    }
+
+    data class GearRatio(
+        val high: Int,
+        val low: Int,
+    ) {
+        init { high > low }
+
+        val value: Int = high * low
     }
 }
