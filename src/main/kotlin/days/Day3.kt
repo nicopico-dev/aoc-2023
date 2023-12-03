@@ -49,6 +49,9 @@ class Day3(
         }
 
         fun getNumberStartingPoint(point: Point): Point {
+            require(getCharacterAt(point).isDigit()) {
+                "Character at $point is not a digit ${getCharacterAt(point)}"
+            }
             var x = point.x
             while (x > 0 && getCharacterAt(Point(x - 1, point.y)).isDigit()) {
                 x -= 1

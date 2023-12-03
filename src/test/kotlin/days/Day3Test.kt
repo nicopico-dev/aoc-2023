@@ -62,6 +62,16 @@ class Day3Test {
             getNumberStartingPoint(Point(x = 3, y = 9)) shouldBe Point(x = 1, y = 9)
         }
     }
+
+    @Test
+    fun `An exception is thrown if one tries to retrieve the starting point of a non-existant number`() {
+        val data = InputReader("input_day_3.txt").getInputAsString()
+        val schematic = Schematic(data)
+
+        shouldThrow<IllegalArgumentException> {
+            schematic.getNumberStartingPoint(Point(0, 1))
+        }
+    }
     //endregion
 
     //region Point
