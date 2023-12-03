@@ -51,6 +51,17 @@ class Day3Test {
             Point(x = 5, y = 8),    // *
         )
     }
+
+    @Test
+    fun `Schematic can retrieve the starting point of a number`() {
+        val data = InputReader("input_day_3.txt").getInputAsString()
+        val schematic = Schematic(data)
+
+        assertSoftly(schematic) {
+            getNumberStartingPoint(Point(x = 1, y = 0)) shouldBe Point(x = 0, y = 0)
+            getNumberStartingPoint(Point(x = 3, y = 9)) shouldBe Point(x = 1, y = 9)
+        }
+    }
     //endregion
 
     //region Point

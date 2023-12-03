@@ -47,6 +47,14 @@ class Day3(
                     )
                 }.toList()
         }
+
+        fun getNumberStartingPoint(point: Point): Point {
+            var x = point.x
+            while (x > 0 && getCharacterAt(Point(x - 1, point.y)).isDigit()) {
+                x -= 1
+            }
+            return Point(x, point.y)
+        }
     }
 
     data class Point(val x: Int, val y: Int) {
