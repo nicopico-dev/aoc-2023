@@ -4,7 +4,30 @@ class Day3(
     inputFileNameOverride: String? = null,
 ) : Day(3, inputFileNameOverride) {
     override fun partOne(): Any {
-        TODO("Not yet implemented")
+        return getPartNumbers()
+            .sum()
+    }
+
+    internal fun getPartNumbers(): List<Int> {
+        val schematic = Schematic(inputString)
+        return schematic
+            .getSymbolPoints()
+            .flatMap {
+                it.computeAdjacentPoints(
+                    width = schematic.width,
+                    height = schematic.height,
+                )
+            }
+            .filter { point ->
+                schematic.getCharacterAt(point).isDigit()
+            }
+            .map { point ->
+                schematic.getNumberStartingPoint(point)
+            }
+            .distinct()
+            .map { point ->
+                schematic.getWholeNumberStartingAt(point)
+            }
     }
 
     class Schematic(private val data: String) {

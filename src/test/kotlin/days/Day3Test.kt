@@ -150,4 +150,17 @@ class Day3Test {
         }
     }
     //endregion
+
+    @Test
+    fun partNumbers() {
+        val day = Day3()
+        day.getPartNumbers() shouldContainExactlyInAnyOrder
+                listOf(467, 35, 633, 617, 592, 755, 664, 598)
+    }
+
+    @Test
+    fun partOne() {
+        val day = Day3()
+        day.partOne() shouldBe 4361
+    }
 }
