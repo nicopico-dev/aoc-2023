@@ -11,7 +11,6 @@ class Day3(
         description: String
     ) {
         val width: Int = description.indexOf("\n")
-        // Last line does not have a new-line character
-        val height: Int = description.count { it == '\n' } + 1
+        val height: Int = description.count { it == '\n' }
     }
 }
