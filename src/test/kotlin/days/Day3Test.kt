@@ -151,6 +151,7 @@ class Day3Test {
     }
     //endregion
 
+    //region Part 1
     @Test
     fun partNumbers() {
         val day = Day3()
@@ -163,4 +164,5 @@ class Day3Test {
         val day = Day3()
         day.partOne() shouldBe 4361
     }
+    //endregion
 }

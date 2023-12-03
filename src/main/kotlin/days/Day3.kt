@@ -85,14 +85,14 @@ class Day3(
                 "Character at $point is not a digit ${getCharacterAt(point)}"
             }
             val buffer = StringBuilder()
-
-            var char: Char = getCharacterAt(point)
-            var x = point.x
-            do {
-                buffer.append(char)
-                x += 1
+            var char: Char
+            for (x in point.x..<width) {
                 char = getCharacterAt(Point(x, point.y))
-            } while (char.isDigit())
+                if (!char.isDigit()) {
+                    break
+                }
+                buffer.append(char)
+            }
 
             return buffer.toString().toInt()
         }
