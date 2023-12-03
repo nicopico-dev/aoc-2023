@@ -11,7 +11,16 @@ class Day3(
         val width: Int = data.indexOf("\n")
         val height: Int = data.count { it == '\n' }
 
+        @Deprecated(
+            "User getCharacterAt(point)",
+            replaceWith = ReplaceWith("this.getCharacterAt(Point(x, y))")
+        )
         fun getCharacterAt(x: Int, y: Int): Char {
+            return getCharacterAt(Point(x = x, y = y))
+        }
+
+        fun getCharacterAt(point: Point): Char {
+            val (x, y) = point
             require(x in 0..<width) {
                 "x should be in range [0, $width[ ($x)"
             }

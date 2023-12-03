@@ -29,10 +29,10 @@ class Day3Test {
         val schematic = Schematic(data)
 
         assertSoftly(schematic) {
-            getCharacterAt(x = 0, y = 0) shouldBe '4'
-            getCharacterAt(x = 0, y = 9) shouldBe '.'
-            getCharacterAt(x = 3, y = 1) shouldBe '*'
-            getCharacterAt(x = 0, y = 4) shouldBe '6'
+            getCharacterAt(Point(x = 0, y = 0)) shouldBe '4'
+            getCharacterAt(Point(x = 0, y = 9)) shouldBe '.'
+            getCharacterAt(Point(x = 3, y = 1)) shouldBe '*'
+            getCharacterAt(Point(x = 0, y = 4)) shouldBe '6'
         }
     }
 
@@ -44,22 +44,22 @@ class Day3Test {
         assertSoftly(schematic) {
             withClue("Negative X") {
                 shouldThrow<IllegalArgumentException> {
-                    getCharacterAt(x = -1, y = 0)
+                    getCharacterAt(Point(x = -1, y = 0))
                 }
             }
             withClue("Negative Y") {
                 shouldThrow<IllegalArgumentException> {
-                    getCharacterAt(x = 0, y = -1)
+                    getCharacterAt(Point(x = 0, y = -1))
                 }
             }
             withClue("Too big X") {
                 shouldThrow<IllegalArgumentException> {
-                    getCharacterAt(x = 0, y = 10)
+                    getCharacterAt(Point(x = 0, y = 10))
                 }
             }
             withClue("Too big Y") {
                 shouldThrow<IllegalArgumentException> {
-                    getCharacterAt(x = 10, y = 0)
+                    getCharacterAt(Point(x = 10, y = 0))
                 }
             }
         }
