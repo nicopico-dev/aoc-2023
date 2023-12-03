@@ -12,6 +12,7 @@ import util.InputReader
 
 class Day3Test {
 
+    //region Schematic
     @Test
     fun `Schematic can be loaded from text`() {
         val data = InputReader("input_day_3.txt").getInputAsString()
@@ -36,6 +37,23 @@ class Day3Test {
         }
     }
 
+    @Test
+    fun `Schematic can retrieve all symbols points`() {
+        val data = InputReader("input_day_3.txt").getInputAsString()
+        val schematic = Schematic(data)
+
+        schematic.getSymbolPoints() shouldContainExactlyInAnyOrder listOf(
+            Point(x = 3, y = 1),    // *
+            Point(x = 6, y = 3),    // #
+            Point(x = 3, y = 4),    // *
+            Point(x = 5, y = 5),    // +
+            Point(x = 3, y = 8),    // $
+            Point(x = 5, y = 8),    // *
+        )
+    }
+    //endregion
+
+    //region Point
     @Test
     fun `Trying to get character from an invalid point coordinate will throw an exception`() {
         val data = InputReader("input_day_3.txt").getInputAsString()
@@ -89,4 +107,5 @@ class Day3Test {
             )
         }
     }
+    //endregion
 }

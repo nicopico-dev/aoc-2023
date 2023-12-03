@@ -33,6 +33,20 @@ class Day3(
 
             return data[index]
         }
+
+        fun getSymbolPoints(): List<Point> {
+            val symbolRegex = Regex("[^.0-9\\s]")
+            return symbolRegex.findAll(data)
+                .map { match ->
+                    val index = match.range.first
+                        // Remove 1 for each line, to exclude '\n' characters
+                        .let { it - (it / width) }
+                    Point(
+                        x = index % width,
+                        y = index / width,
+                    )
+                }.toList()
+        }
     }
 
     data class Point(val x: Int, val y: Int) {
