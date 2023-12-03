@@ -7,9 +7,7 @@ class Day3(
         TODO("Not yet implemented")
     }
 
-    class Schematic(
-        private val data: String
-    ) {
+    class Schematic(private val data: String) {
         val width: Int = data.indexOf("\n")
         val height: Int = data.count { it == '\n' }
 
@@ -25,6 +23,27 @@ class Day3(
             val index = (y * (width + 1)) + x
 
             return data[index]
+        }
+    }
+
+    data class Point(val x: Int, val y: Int) {
+        fun computeAdjacentPoints(width: Int, height: Int): List<Point> {
+            return listOf(
+                // Row above
+                copy(x = x - 1, y = y - 1),
+                copy(y = y - 1),
+                copy(x = x + 1, y = y - 1),
+                // Same row
+                copy(x = x - 1),
+                copy(x = x + 1),
+                // Row below
+                copy(x = x - 1, y = y + 1),
+                copy(y = y + 1),
+                copy(x = x + 1, y = y + 1),
+            ).filter {
+                // Remove all out-of-bounds points
+                it.x in 0..<width && it.y in 0..<height
+            }
         }
     }
 }
