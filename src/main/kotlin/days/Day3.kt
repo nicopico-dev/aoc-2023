@@ -58,6 +58,23 @@ class Day3(
             }
             return Point(x, point.y)
         }
+
+        fun getWholeNumberStartingAt(point: Point): Int {
+            require(getCharacterAt(point).isDigit()) {
+                "Character at $point is not a digit ${getCharacterAt(point)}"
+            }
+            val buffer = StringBuilder()
+
+            var char: Char = getCharacterAt(point)
+            var x = point.x
+            do {
+                buffer.append(char)
+                x += 1
+                char = getCharacterAt(Point(x, point.y))
+            } while (char.isDigit())
+
+            return buffer.toString().toInt()
+        }
     }
 
     data class Point(val x: Int, val y: Int) {

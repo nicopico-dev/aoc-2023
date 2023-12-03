@@ -64,12 +64,33 @@ class Day3Test {
     }
 
     @Test
-    fun `An exception is thrown if one tries to retrieve the starting point of a non-existant number`() {
+    fun `An exception should be thrown when retrieving the starting point of a non-existant number`() {
         val data = InputReader("input_day_3.txt").getInputAsString()
         val schematic = Schematic(data)
 
         shouldThrow<IllegalArgumentException> {
             schematic.getNumberStartingPoint(Point(0, 1))
+        }
+    }
+
+    @Test
+    fun `Schematic can retrieve a whole number from its starting point`() {
+        val data = InputReader("input_day_3.txt").getInputAsString()
+        val schematic = Schematic(data)
+
+        assertSoftly(schematic) {
+            getWholeNumberStartingAt(Point(x = 0, y = 0)) shouldBe 467
+            getWholeNumberStartingAt(Point(x = 1, y = 9)) shouldBe 664
+        }
+    }
+
+    @Test
+    fun `An exception should be thrown when retrieving the number from an invalid starting point`() {
+        val data = InputReader("input_day_3.txt").getInputAsString()
+        val schematic = Schematic(data)
+
+        shouldThrow<IllegalArgumentException> {
+            schematic.getWholeNumberStartingAt(Point(0, 1))
         }
     }
     //endregion
