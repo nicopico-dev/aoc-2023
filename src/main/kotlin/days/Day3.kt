@@ -15,21 +15,8 @@ class Day3(
         val schematic = Schematic(inputString)
         return schematic
             .getSymbolPoints()
-            .flatMap {
-                it.computeAdjacentPoints(
-                    width = schematic.width,
-                    height = schematic.height,
-                )
-            }
-            .filter { point ->
-                schematic.getCharacterAt(point).isDigit()
-            }
-            .map { point ->
-                schematic.getNumberStartingPoint(point)
-            }
-            .distinct()
-            .map { point ->
-                schematic.getWholeNumberStartingAt(point)
+            .flatMap { point ->
+                point.getAdjacentNumbers(schematic)
             }
     }
 
@@ -46,18 +33,7 @@ class Day3(
                 schematic.getCharacterAt(point) == '*'
             }
             .map { gearPoint ->
-                gearPoint
-                    .computeAdjacentPoints(schematic.width, schematic.height)
-                    .filter { point ->
-                        schematic.getCharacterAt(point).isDigit()
-                    }
-                    .map { point ->
-                        schematic.getNumberStartingPoint(point)
-                    }
-                    .distinct()
-                    .map { point ->
-                        schematic.getWholeNumberStartingAt(point)
-                    }
+                gearPoint.getAdjacentNumbers(schematic)
             }
             .mapNotNull { list ->
                 if (list.size == 2) {
@@ -167,5 +143,19 @@ class Day3(
         init { high > low }
 
         val value: Int = high * low
+    }
+
+    private fun Point.getAdjacentNumbers(schematic: Schematic): List<Int> {
+        return computeAdjacentPoints(schematic.width, schematic.height)
+            .filter { point ->
+                schematic.getCharacterAt(point).isDigit()
+            }
+            .map { point ->
+                schematic.getNumberStartingPoint(point)
+            }
+            .distinct()
+            .map { point ->
+                schematic.getWholeNumberStartingAt(point)
+            }
     }
 }
