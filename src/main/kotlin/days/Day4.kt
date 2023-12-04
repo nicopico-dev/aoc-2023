@@ -19,7 +19,7 @@ class Day4 : Day(4) {
     }
 
     companion object {
-        private val cardRegex = Regex("Card (\\d+): ([\\d\\s]+)\\|([\\d\\s]+)")
+        private val cardRegex = Regex("Card\\s+(\\d+): ([\\d\\s]+)\\|([\\d\\s]+)")
         private val spaceRegex = Regex("\\s+")
 
         fun parseCard(data: String): Card {
