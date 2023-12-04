@@ -1,15 +1,22 @@
 package days
 
+import kotlin.math.pow
+
 class Day4 : Day(4) {
     override fun partOne(): Any {
-        TODO("Not yet implemented")
+        return inputList
+            .map { parseCard(it) }
+            .map { it.winningNumbersYouHave.size }
+            .sumOf { computePoints(winCount = it) }
     }
 
     data class Card(
         val id: Int,
         val winningNumbers: Set<Int>,
         val numbersYouHave: Set<Int>,
-    )
+    ) {
+        val winningNumbersYouHave: Set<Int> = winningNumbers intersect numbersYouHave
+    }
 
     companion object {
         private val cardRegex = Regex("Card (\\d+): ([\\d\\s]+)\\|([\\d\\s]+)")
@@ -34,5 +41,13 @@ class Day4 : Day(4) {
             .split(spaceRegex)
             .map(String::toInt)
             .toSet()
+
+        fun computePoints(winCount: Int): Int {
+            return if (winCount > 0) {
+                2.0.pow(winCount - 1.0).toInt()
+            } else {
+                0
+            }
+        }
     }
 }
