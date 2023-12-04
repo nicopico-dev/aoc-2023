@@ -3,19 +3,69 @@ package days
 import kotlin.math.pow
 
 class Day4 : Day(4) {
+
+    private val cards: List<Card> by lazy {
+        inputList.map { parseCard(it) }
+    }
+
     override fun partOne(): Any {
-        return inputList
-            .map { parseCard(it) }
+        return cards
             .map { it.winningNumbersYouHave.size }
             .sumOf { computePoints(winCount = it) }
     }
 
+    override fun partTwo(): Any {
+        return processCards().values.sum()
+    }
+
+    fun processCards(): Map<CardId, Int> {
+        val allCards: List<Card> = cards +
+                cards.flatMap { processCards(it) }
+        return allCards
+            .groupBy { it.id }
+            .mapValues { it.value.size }
+    }
+
+    private fun processCards(card: Card): List<Card> {
+        val wonCards = getWonCards(card)
+        return if (wonCards.isEmpty()) emptyList()
+        // Each won card must be processed as well
+        else wonCards + wonCards.flatMap { processCards(it) }
+    }
+
+    private fun getWonCards(card: Card): List<Card> {
+        return card.computeWonCopies()
+            .map { cardId ->
+                cards.first { it.id == cardId }
+            }
+    }
+
     data class Card(
-        val id: Int,
+        val id: CardId,
         val winningNumbers: Set<Int>,
         val numbersYouHave: Set<Int>,
     ) {
         val winningNumbersYouHave: Set<Int> = winningNumbers intersect numbersYouHave
+
+        fun computeWonCopies(): List<CardId> {
+            return if (winningNumbersYouHave.isEmpty()) {
+                emptyList()
+            } else {
+                val winCount = winningNumbersYouHave.size
+                var cardId = id
+                buildList {
+                    repeat(winCount) {
+                        cardId = cardId.next()
+                        add(cardId)
+                    }
+                }
+            }
+        }
+    }
+
+    @JvmInline
+    value class CardId(val id: Int) {
+        fun next() = CardId(id + 1)
     }
 
     companion object {
@@ -30,7 +80,7 @@ class Day4 : Day(4) {
 
             val (id, winningNumbers, numbersYouHave) = match.destructured
             return Card(
-                id = id.toInt(),
+                id = CardId(id.toInt()),
                 winningNumbers = winningNumbers.extractNumbers(),
                 numbersYouHave = numbersYouHave.extractNumbers(),
             )
