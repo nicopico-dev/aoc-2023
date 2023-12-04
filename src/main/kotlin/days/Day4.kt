@@ -18,21 +18,30 @@ class Day4 : Day(4) {
         return processCards().values.sum()
     }
 
+    /**
+     * Compute the number of each card the user as won as the end
+     */
     fun processCards(): Map<CardId, Int> {
         val allCards: List<Card> = cards +
-                cards.flatMap { processCards(it) }
+                cards.flatMap { processCard(it) }
         return allCards
             .groupBy { it.id }
             .mapValues { it.value.size }
     }
 
-    private fun processCards(card: Card): List<Card> {
+    /**
+     * Return *all* cards won by [card]
+     */
+    private fun processCard(card: Card): List<Card> {
         val wonCards = getWonCards(card)
         return if (wonCards.isEmpty()) emptyList()
         // Each won card must be processed as well
-        else wonCards + wonCards.flatMap { processCards(it) }
+        else wonCards + wonCards.flatMap { processCard(it) }
     }
 
+    /**
+     * Return the first round of cards won by [card]
+     */
     private fun getWonCards(card: Card): List<Card> {
         return card.computeWonCopies()
             .map { cardId ->
