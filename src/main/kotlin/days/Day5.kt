@@ -1,5 +1,8 @@
 package days
 
+private typealias Id = Long
+private fun String.toId(): Id = toLong()
+
 class Day5: Day(5) {
     override fun partOne(): Any {
         val almanac = loadAlmanac()
@@ -13,7 +16,7 @@ class Day5: Day(5) {
     }
     
     data class Almanac(
-            val seeds: List<Int>,
+            val seeds: List<Id>,
             val seedToSoil: AlmanacSection,
             val soilToFertilizer: AlmanacSection,
             val fertilizerToWater: AlmanacSection,
@@ -22,7 +25,7 @@ class Day5: Day(5) {
             val temperatureToHumidity: AlmanacSection,
             val humidityToLocation: AlmanacSection,
     ) {
-        fun getSeedLocation(seed: Int): Int {
+        fun getSeedLocation(seed: Id): Id {
             return seedToSoil.getMatchingIdFor(seed)
                 .let { soilToFertilizer.getMatchingIdFor(it) }
                 .let { fertilizerToWater.getMatchingIdFor(it) }
@@ -34,17 +37,17 @@ class Day5: Day(5) {
     }
 
     data class Mapping(
-        val destinationStart: Int,
-        val sourceStart: Int,
-        val rangeLength: Int,
+        val destinationStart: Id,
+        val sourceStart: Id,
+        val rangeLength: Id,
     ) {
-        private val sourceEnd: Int = sourceStart + rangeLength -1
+        private val sourceEnd: Id = sourceStart + rangeLength -1
 
-        private fun isMapping(source: Int): Boolean {
+        private fun isMapping(source: Id): Boolean {
             return source in sourceStart..sourceEnd
         }
 
-        fun getMatchingId(source: Int): Int? {
+        fun getMatchingId(source: Id): Id? {
             if (!isMapping(source)) return null
 
             val delta = source - sourceStart
@@ -53,7 +56,7 @@ class Day5: Day(5) {
     }
     
     data class AlmanacSection(val data: List<Mapping>) {
-        fun getMatchingIdFor(source: Int): Int {
+        fun getMatchingIdFor(source: Id): Id {
             return data
                 .firstNotNullOfOrNull {
                     it.getMatchingId(source)
@@ -69,7 +72,7 @@ class Day5: Day(5) {
             val seeds = data[0]
                 .substring(7)
                 .split(" ")
-                .map(String::toInt)
+                .map(String::toId)
             
             val sectionMap: MutableMap<String, MutableList<Mapping>> = mutableMapOf()
             lateinit var sectionKey: String
@@ -84,9 +87,9 @@ class Day5: Day(5) {
                             mappingRegex.matchEntire(line)!!.destructured
                         sectionMap.getOrPut(sectionKey, ::mutableListOf).add(
                             Mapping(
-                                destinationStart = destinationStart.toInt(),
-                                sourceStart = sourceStart.toInt(),
-                                rangeLength = rangeLength.toInt(),
+                                destinationStart = destinationStart.toId(),
+                                sourceStart = sourceStart.toId(),
+                                rangeLength = rangeLength.toId(),
                             )
                         )
                     }
