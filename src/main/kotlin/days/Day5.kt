@@ -10,31 +10,46 @@ class Day5: Day(5) {
     }
     
     data class Almanac(
-        val seeds: List<Int>,
-        val seedToSoil: IdMapSection,
-        val soilToFertilizer: IdMapSection,
-        val fertilizerToWater: IdMapSection,
-        val waterToLight: IdMapSection,
-        val lightToTemperature: IdMapSection,
-        val temperatureToHumidity: IdMapSection,
-        val humidityToLocation: IdMapSection,
+            val seeds: List<Int>,
+            val seedToSoil: AlmanacSection,
+            val soilToFertilizer: AlmanacSection,
+            val fertilizerToWater: AlmanacSection,
+            val waterToLight: AlmanacSection,
+            val lightToTemperature: AlmanacSection,
+            val temperatureToHumidity: AlmanacSection,
+            val humidityToLocation: AlmanacSection,
     )
     
-    data class IdMap(
+    data class Mapping(
         val destinationStart: Int,
         val sourceStart: Int,
         val rangeLength: Int,
     ) {
-        val destinationEnd: Int = destinationStart + rangeLength
-        val sourceEnd: Int = sourceStart + rangeLength
+        private val sourceEnd: Int = sourceStart + rangeLength -1
+
+        private fun isMapping(source: Int): Boolean {
+            return source in sourceStart..sourceEnd
+        }
+
+        fun getMatchingId(source: Int): Int? {
+            if (!isMapping(source)) return null
+
+            val delta = source - sourceStart
+            return destinationStart + delta
+        }
     }
     
-    data class IdMapSection(
-        val data: List<IdMap>
-    )
+    data class AlmanacSection(val data: List<Mapping>) {
+        fun getMatchingIdFor(source: Int): Int {
+            return data
+                .firstNotNullOfOrNull {
+                    it.getMatchingId(source)
+                } ?: source
+        }
+    }
     
     companion object {
-        private val mapIdRegex = Regex("(\\d+) (\\d+) (\\d+)")
+        private val mappingRegex = Regex("(\\d+) (\\d+) (\\d+)")
         
         private fun parseAlmanac(data: List<String>): Almanac {
             // First line, ignoring "seeds: "
@@ -43,19 +58,19 @@ class Day5: Day(5) {
                 .split(" ")
                 .map(String::toInt)
             
-            val idMaps: MutableMap<String, MutableList<IdMap>> = mutableMapOf()
-            lateinit var idMapKey: String
+            val sectionMap: MutableMap<String, MutableList<Mapping>> = mutableMapOf()
+            lateinit var sectionKey: String
             
             for (line in data) {
                 when {
                     line.startsWith("seeds: ") -> continue
-                    line.isEmpty() -> idMapKey = ""
-                    line.endsWith(" map:") -> idMapKey = line.replace(" map:", "")
+                    line.isEmpty() -> sectionKey = ""
+                    line.endsWith(" map:") -> sectionKey = line.replace(" map:", "")
                     else -> {
                         val (destinationStart, sourceStart, rangeLength) =
-                            mapIdRegex.matchEntire(line)!!.destructured
-                        idMaps.getOrPut(idMapKey, ::mutableListOf).add(
-                            IdMap(
+                            mappingRegex.matchEntire(line)!!.destructured
+                        sectionMap.getOrPut(sectionKey, ::mutableListOf).add(
+                            Mapping(
                                 destinationStart = destinationStart.toInt(),
                                 sourceStart = sourceStart.toInt(),
                                 rangeLength = rangeLength.toInt(),
@@ -67,13 +82,13 @@ class Day5: Day(5) {
             
             return Almanac(
                 seeds = seeds,
-                seedToSoil = IdMapSection(idMaps["seed-to-soil"] ?: emptyList()),
-                soilToFertilizer = IdMapSection(idMaps["soil-to-fertilizer"] ?: emptyList()),
-                fertilizerToWater = IdMapSection(idMaps["fertilizer-to-water"] ?: emptyList()),
-                waterToLight = IdMapSection(idMaps["water-to-light"] ?: emptyList()),
-                lightToTemperature = IdMapSection(idMaps["light-to-temperature"] ?: emptyList()),
-                temperatureToHumidity = IdMapSection(idMaps["temperature-to-humidity"] ?: emptyList()),
-                humidityToLocation = IdMapSection(idMaps["humidity-to-location"] ?: emptyList()),
+                seedToSoil = AlmanacSection(sectionMap["seed-to-soil"] ?: emptyList()),
+                soilToFertilizer = AlmanacSection(sectionMap["soil-to-fertilizer"] ?: emptyList()),
+                fertilizerToWater = AlmanacSection(sectionMap["fertilizer-to-water"] ?: emptyList()),
+                waterToLight = AlmanacSection(sectionMap["water-to-light"] ?: emptyList()),
+                lightToTemperature = AlmanacSection(sectionMap["light-to-temperature"] ?: emptyList()),
+                temperatureToHumidity = AlmanacSection(sectionMap["temperature-to-humidity"] ?: emptyList()),
+                humidityToLocation = AlmanacSection(sectionMap["humidity-to-location"] ?: emptyList()),
             )
         }
     }

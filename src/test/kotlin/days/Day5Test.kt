@@ -1,8 +1,8 @@
 package days
 
 import days.Day5.Almanac
-import days.Day5.IdMap
-import days.Day5.IdMapSection
+import days.Day5.Mapping
+import days.Day5.AlmanacSection
 import io.kotest.assertions.assertSoftly
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
@@ -17,19 +17,45 @@ class Day5Test {
 
         assertSoftly(almanac) {
             seeds shouldBe listOf(79, 14, 55, 13)
-            seedToSoil shouldBe IdMapSection(
+            seedToSoil shouldBe AlmanacSection(
                     listOf(
-                            IdMap(50, 98, 2),
-                            IdMap(52, 50, 48),
+                            Mapping(50, 98, 2),
+                            Mapping(52, 50, 48),
                     ),
             )
-            lightToTemperature shouldBe IdMapSection(
+            lightToTemperature shouldBe AlmanacSection(
                     listOf(
-                            IdMap(45, 77, 23),
-                            IdMap(81, 45, 19),
-                            IdMap(68, 64, 13),
+                            Mapping(45, 77, 23),
+                            Mapping(81, 45, 19),
+                            Mapping(68, 64, 13),
                     ),
             )
+        }
+    }
+
+    @Test
+    fun `IdMapSection can give the correspondance between ids`() {
+        val section = AlmanacSection(
+            listOf(
+                Mapping(50, 98, 2),
+                Mapping(52, 50, 48),
+                ),
+            )
+
+        assertSoftly(section) {
+            // No mapping -> same number
+            getMatchingIdFor(0) shouldBe 0
+            getMatchingIdFor(1) shouldBe 1
+
+            getMatchingIdFor(48) shouldBe 48
+            getMatchingIdFor(49) shouldBe 49
+            getMatchingIdFor(50) shouldBe 52
+            getMatchingIdFor(51) shouldBe 53
+
+            getMatchingIdFor(96) shouldBe 98
+            getMatchingIdFor(97) shouldBe 99
+            getMatchingIdFor(98) shouldBe 50
+            getMatchingIdFor(99) shouldBe 51
         }
     }
 }
