@@ -2,7 +2,10 @@ package days
 
 class Day5: Day(5) {
     override fun partOne(): Any {
-        TODO("Not yet implemented")
+        val almanac = loadAlmanac()
+        return almanac.seeds
+            .map { almanac.getSeedLocation(it) }
+            .min()
     }
     
     fun loadAlmanac(): Almanac {
@@ -18,8 +21,18 @@ class Day5: Day(5) {
             val lightToTemperature: AlmanacSection,
             val temperatureToHumidity: AlmanacSection,
             val humidityToLocation: AlmanacSection,
-    )
-    
+    ) {
+        fun getSeedLocation(seed: Int): Int {
+            return seedToSoil.getMatchingIdFor(seed)
+                .let { soilToFertilizer.getMatchingIdFor(it) }
+                .let { fertilizerToWater.getMatchingIdFor(it) }
+                .let { waterToLight.getMatchingIdFor(it) }
+                .let { lightToTemperature.getMatchingIdFor(it) }
+                .let { temperatureToHumidity.getMatchingIdFor(it) }
+                .let { humidityToLocation.getMatchingIdFor(it) }
+        }
+    }
+
     data class Mapping(
         val destinationStart: Int,
         val sourceStart: Int,

@@ -58,4 +58,23 @@ class Day5Test {
             getMatchingIdFor(99) shouldBe 51
         }
     }
+
+    @Test
+    fun `Almanac can give the location corresponding to a seed`() {
+        val day = Day5()
+        val almanac: Almanac = day.loadAlmanac()
+
+        assertSoftly {
+            almanac.getSeedLocation(79) shouldBe 82
+            almanac.getSeedLocation(14) shouldBe 43
+            almanac.getSeedLocation(55) shouldBe 86
+            almanac.getSeedLocation(13) shouldBe 35
+        }
+    }
+
+    @Test
+    fun partOne() {
+        val day = Day5()
+        day.partOne() shouldBe 35
+    }
 }
