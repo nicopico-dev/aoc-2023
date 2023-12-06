@@ -1,5 +1,13 @@
 package days
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.reduce
+import kotlinx.coroutines.runBlocking
+import kotlin.math.min
+
 private typealias Id = Long
 private fun String.toId(): Id = toLong()
 
@@ -10,24 +18,33 @@ class Day5: Day(5) {
             .map { almanac.getSeedLocation(it) }
             .min()
     }
-    
+
     override fun partTwo(): Any {
         val almanac = loadAlmanac()
+
         val seeds = almanac.seeds
             .windowed(2, 2)
-            .flatMap {
-                buildSequence(it[0], it[1])
-            }
+            .map { buildSequence(it[0], it[1]).asFlow() }
+            .asFlow()
 
-        return seeds
-            .map { almanac.getSeedLocation(it) }
-            .min()
+        return runBlocking {
+            seeds
+                .map { flow ->
+                    flow.map { seedId -> almanac.getSeedLocation(seedId) }
+                        .flowOn(Dispatchers.Default)
+                        .reduce { min, value -> min(min, value) }
+                }
+                .reduce { minValue, current ->
+                    min(minValue,  current)
+                }
+                .toInt()
+        }
     }
 
     fun loadAlmanac(): Almanac {
         return parseAlmanac(inputList)
     }
-    
+
     data class Almanac(
             val seeds: List<Id>,
             val seedToSoil: AlmanacSection,
@@ -67,7 +84,7 @@ class Day5: Day(5) {
             return destinationStart + delta
         }
     }
-    
+
     data class AlmanacSection(val data: List<Mapping>) {
         fun getMatchingIdFor(source: Id): Id {
             return data
@@ -76,20 +93,20 @@ class Day5: Day(5) {
                 } ?: source
         }
     }
-    
+
     companion object {
         private val mappingRegex = Regex("(\\d+) (\\d+) (\\d+)")
-        
+
         private fun parseAlmanac(data: List<String>): Almanac {
             // First line, ignoring "seeds: "
             val seeds = data[0]
                 .substring(7)
                 .split(" ")
                 .map(String::toId)
-            
+
             val sectionMap: MutableMap<String, MutableList<Mapping>> = mutableMapOf()
             lateinit var sectionKey: String
-            
+
             for (line in data) {
                 when {
                     line.startsWith("seeds: ") -> continue
@@ -108,7 +125,7 @@ class Day5: Day(5) {
                     }
                 }
             }
-            
+
             return Almanac(
                 seeds = seeds,
                 seedToSoil = AlmanacSection(sectionMap["seed-to-soil"] ?: emptyList()),
