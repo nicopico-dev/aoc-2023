@@ -11,6 +11,19 @@ class Day5: Day(5) {
             .min()
     }
     
+    override fun partTwo(): Any {
+        val almanac = loadAlmanac()
+        val seeds = almanac.seeds
+            .windowed(2, 2)
+            .flatMap {
+                buildList(it[0], it[1])
+            }
+
+        return seeds
+            .map { almanac.getSeedLocation(it) }
+            .min()
+    }
+
     fun loadAlmanac(): Almanac {
         return parseAlmanac(inputList)
     }
@@ -106,6 +119,10 @@ class Day5: Day(5) {
                 temperatureToHumidity = AlmanacSection(sectionMap["temperature-to-humidity"] ?: emptyList()),
                 humidityToLocation = AlmanacSection(sectionMap["humidity-to-location"] ?: emptyList()),
             )
+        }
+
+        fun buildList(start: Id, length: Id): List<Id> {
+            return LongRange(start, start + length - 1).toList()
         }
     }
 }
