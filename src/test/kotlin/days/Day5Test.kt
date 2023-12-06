@@ -80,7 +80,7 @@ class Day5Test {
 
     @Test
     fun `list can be build from a start and a length`() {
-        Day5.buildList(79, 14) shouldBe listOf(
+        Day5.buildSequence(79, 14).toList() shouldBe listOf(
             79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92
         )
     }

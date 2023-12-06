@@ -16,7 +16,7 @@ class Day5: Day(5) {
         val seeds = almanac.seeds
             .windowed(2, 2)
             .flatMap {
-                buildList(it[0], it[1])
+                buildSequence(it[0], it[1])
             }
 
         return seeds
@@ -121,8 +121,8 @@ class Day5: Day(5) {
             )
         }
 
-        fun buildList(start: Id, length: Id): List<Id> {
-            return LongRange(start, start + length - 1).toList()
+        fun buildSequence(start: Id, length: Id): Sequence<Id> = generateSequence(start) { value ->
+            (value + 1).takeIf { it < start + length }
         }
     }
 }
